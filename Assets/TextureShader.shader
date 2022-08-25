@@ -22,12 +22,14 @@ Shader "Unlit/TextureShader"
 			{
 				float4 vertex : POSITION;
 				float2 uv : TEXCOORD0;
+				float4 color : COLOR;
 			};
 
 			struct vertOut
 			{
 				float4 vertex : SV_POSITION;
 				float2 uv : TEXCOORD0;
+				float4 color: COLOR;
 			};
 
 			// Implementation of the vertex shader
@@ -36,14 +38,16 @@ Shader "Unlit/TextureShader"
 				vertOut o;
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 				o.uv = v.uv;
+				o.color = v.color;
 				return o;
 			}
 			
 			// Implementation of the fragment (pixel) shader
 			fixed4 frag(vertOut v) : SV_Target
 			{
-				fixed4 color = tex2D(_MainTex, v.uv);
-				return color;
+				fixed4 ct = tex2D(_MainTex, v.uv);
+				fixed4 cc = v.color;
+				return (ct * 0.5 + cc*0.5);
 			}
 			ENDCG
 		}

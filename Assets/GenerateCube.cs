@@ -8,6 +8,12 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer))]
 public class GenerateCube : MonoBehaviour
 {
+    [SerializeField]
+    private Texture texture;
+    [SerializeField]
+    private Shader shader = null;
+    private float hue = 0.0f;
+
     private void Start()
     {
         // Generate the mesh and assign to the mesh filter.
@@ -19,7 +25,17 @@ public class GenerateCube : MonoBehaviour
         // Recall how we set the material's "color" in the first workshop:
         // e.g. material.color = ...;
         // Turns out we can also set the material's shader in a similar way:
-        material.shader = null;
+        material.shader = shader;
+
+        material.SetTexture("_MainTex", texture);
+    }
+
+    private void Update()
+    {
+        hue += 0.001f;
+        if (hue > 1) hue = 0;
+        var material = GetComponent<Renderer>().material;
+        //material.SetColor("_Color", Color.HSVToRGB(hue, 1.0f, 1.0f));
     }
 
     private Mesh CreateMesh()
@@ -127,7 +143,7 @@ public class GenerateCube : MonoBehaviour
 
             Color.yellow,
             Color.yellow,
-            Color.yellow,
+            Color.blue,
 
             // Front face
             Color.blue,
@@ -169,27 +185,27 @@ public class GenerateCube : MonoBehaviour
             new Vector2(0.666f, 0.0f),
 
             // Left face
-            new Vector2(0.0f, 0.0f),
-            new Vector2(0.0f, 0.0f),
-            new Vector2(0.0f, 0.0f),
-
-            new Vector2(0.0f, 0.0f),
-            new Vector2(0.0f, 0.0f),
-            new Vector2(0.0f, 0.0f),
+            new Vector2(0.666f, 0.666f),
+            new Vector2(0.333f, 0.666f),
+            new Vector2(0.333f, 1.0f),
+            // right leftup rightup
+            new Vector2(0.666f, 0.666f),
+            new Vector2(0.333f, 1.0f),
+            new Vector2(0.666f, 1.0f),
 
             // Right face
             new Vector2(0.0f, 0.333f),
             new Vector2(0.333f, 0.666f),
             new Vector2(0.333f, 0.333f),
 
-            new Vector2(0.0f, 0.666f),
             new Vector2(0.0f, 0.333f),
+            new Vector2(0.0f, 0.666f),
             new Vector2(0.333f, 0.666f),
 
             // Front face
-            new Vector2(0.0f, 0.0f),
-            new Vector2(0.0f, 0.0f),
-            new Vector2(0.0f, 0.0f),
+            new Vector2(0.666f, 0.666f),
+            new Vector2(0.333f, 0.333f),
+            new Vector2(0.333f, 0.666f),
 
             new Vector2(0.666f, 0.666f),
             new Vector2(0.666f, 0.333f),
